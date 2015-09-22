@@ -23,19 +23,3 @@ extension SWKKActor {
     
     func receive(message: Any) {}
 }
-
-protocol SWKKMainThreadActor: SWKKActor {}
-
-extension SWKKMainThreadActor {
-    var dispatchQueue: dispatch_queue_t {
-        return dispatch_get_main_queue()
-    }
-}
-
-infix operator ! {}
-
-public func ! (actor: SWKKActor, message: Any) -> Void {
-    dispatch_async(actor.dispatchQueue) {
-        actor.receive(message)
-    }
-}
