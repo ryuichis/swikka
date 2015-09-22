@@ -10,8 +10,8 @@ import Foundation
 
 infix operator ! {}
 
-public func ! (actor: SWKKActor, message: Any) -> Void {
-    dispatch_async(actor.dispatchQueue) {
-        actor.receive(message)
+public func ! (left: SWKKActor, right: Any) -> Void {
+    dispatch_async(left.dispatchQueue) {
+        left.receive(right)
     }
 }
