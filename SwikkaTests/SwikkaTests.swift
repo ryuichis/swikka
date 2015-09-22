@@ -11,25 +11,60 @@ import XCTest
 
 class SwikkaTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    struct TestMessage {
+        var name: String
+        var expect: XCTestExpectation?
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    struct SimpleActor: SWKKActor {
+        var name: String {
+            return "simple actor"
+        }
+        
+        func receive(message: Any) {
+            switch message {
+            case let testMessage as TestMessage:
+                if testMessage.name == "test name" {
+                    testMessage.expect?.fulfill()
+                }
+            default: break
+            }
+        }
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    struct SimpleMainThreadActor: SWKKMainThreadActor {
+        var name: String {
+            return "simple main-thread actor"
+        }
+        
+        func receive(message: Any) {
+            switch message {
+            case let testMessage as TestMessage:
+                if testMessage.name == "test main-thread" {
+                    testMessage.expect?.fulfill()
+                }
+            default: break
+            }
+        }
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    func testMessageExecuted() {
+        let simpleActor = SimpleActor()
+        simpleActor ! TestMessage(name: "test name", expect: expectationWithDescription("this should be executed"))
+        waitForExpectationsWithTimeout(3) { (error) -> Void in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+    
+    func testMessageExecutedOnMainThread() {
+        let mainThreadActor = SimpleMainThreadActor()
+        mainThreadActor ! TestMessage(name: "test main-thread", expect: expectationWithDescription("this should be executed"))
+        waitForExpectationsWithTimeout(3) { (error) -> Void in
+            if let error = error {
+                print(error)
+            }
         }
     }
     

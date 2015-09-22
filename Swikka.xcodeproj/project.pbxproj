@@ -10,6 +10,7 @@
 		FA6D35F01BB0C21900A01F9E /* Swikka.h in Headers */ = {isa = PBXBuildFile; fileRef = FA6D35EF1BB0C21900A01F9E /* Swikka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA6D35F71BB0C21900A01F9E /* Swikka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6D35EC1BB0C21900A01F9E /* Swikka.framework */; settings = {ASSET_TAGS = (); }; };
 		FA6D35FC1BB0C21900A01F9E /* SwikkaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6D35FB1BB0C21900A01F9E /* SwikkaTests.swift */; };
+		FA6D36091BB0C50200A01F9E /* SWKKActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6D36081BB0C50200A01F9E /* SWKKActor.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		FA6D35F61BB0C21900A01F9E /* SwikkaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwikkaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6D35FB1BB0C21900A01F9E /* SwikkaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwikkaTests.swift; sourceTree = "<group>"; };
 		FA6D35FD1BB0C21900A01F9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA6D36081BB0C50200A01F9E /* SWKKActor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWKKActor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				FA6D35EF1BB0C21900A01F9E /* Swikka.h */,
 				FA6D35F11BB0C21900A01F9E /* Info.plist */,
+				FA6D36081BB0C50200A01F9E /* SWKKActor.swift */,
 			);
 			path = Swikka;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 		FA6D35E31BB0C21900A01F9E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ryuichi Saito, LLC";
 				TargetAttributes = {
@@ -193,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA6D36091BB0C50200A01F9E /* SWKKActor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +312,7 @@
 		FA6D36011BB0C21900A01F9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -317,12 +323,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ryuichisaito.Swikka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		FA6D36021BB0C21900A01F9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
