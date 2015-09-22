@@ -12,8 +12,8 @@ import XCTest
 class SwikkaTests: XCTestCase {
     
     struct TestMessage {
-        var name: String
-        var expect: XCTestExpectation?
+        let name: String
+        let expect: XCTestExpectation?
     }
     
     struct SimpleActor: SWKKActor {
@@ -70,6 +70,47 @@ class SwikkaTests: XCTestCase {
         XCTAssertTrue(mainThreadActor.dispatchQueue.description.containsString("com.apple.main-thread"), "should be on the main thread queue")
         
         mainThreadActor ! TestMessage(name: "test main-thread", expect: expectationWithDescription("this should be executed"))
+        waitForExpectationsWithTimeout(3) { (error) -> Void in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+    
+    struct TestMiddleManMessage {
+        let name: String
+        let expect: XCTestExpectation?
+    }
+    
+    struct MiddleManActor: SWKKActor {
+        var name: String {
+            return "simple actor"
+        }
+        
+        func receive(message: Any) {
+            switch message {
+            case let testMessage as TestMessage:
+                if testMessage.name == "start" {
+                    self ! TestMiddleManMessage(name: "middle man", expect: testMessage.expect)
+                }
+                if testMessage.name == "final" {
+                    testMessage.expect?.fulfill()
+                }
+            case let middleManMessage as TestMiddleManMessage:
+                if middleManMessage.name == "middle man" {
+                    self ! TestMessage(name: "final", expect: middleManMessage.expect)
+                }
+            default: break
+            }
+        }
+    }
+    
+    func testMessagePassing() {
+        let middleManActor = MiddleManActor()
+        
+        middleManActor ! TestMessage(name: "final", expect: expectationWithDescription("directly calling final should be executed"))
+        middleManActor ! TestMessage(name: "start", expect: expectationWithDescription("starting will make it eventually be executed"))
+        middleManActor ! TestMiddleManMessage(name: "middle man", expect: expectationWithDescription("middle man will be executed"))
         waitForExpectationsWithTimeout(3) { (error) -> Void in
             if let error = error {
                 print(error)
