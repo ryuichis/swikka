@@ -50,6 +50,11 @@ class SwikkaTests: XCTestCase {
     
     func testMessageExecuted() {
         let simpleActor = SimpleActor()
+        
+        XCTAssertEqual(simpleActor.name, "simple actor", "simple actor name")
+        print(simpleActor.dispatchQueue.description)
+        XCTAssertTrue(simpleActor.dispatchQueue.description.containsString("com.ryuichisaito.swikka.simple actor"), "should be in its own dispatch queue")
+        
         simpleActor ! TestMessage(name: "test name", expect: expectationWithDescription("this should be executed"))
         waitForExpectationsWithTimeout(3) { (error) -> Void in
             if let error = error {
@@ -60,6 +65,10 @@ class SwikkaTests: XCTestCase {
     
     func testMessageExecutedOnMainThread() {
         let mainThreadActor = SimpleMainThreadActor()
+        
+        XCTAssertEqual(mainThreadActor.name, "simple main-thread actor", "main thread actor name")
+        XCTAssertTrue(mainThreadActor.dispatchQueue.description.containsString("com.apple.main-thread"), "should be on the main thread queue")
+        
         mainThreadActor ! TestMessage(name: "test main-thread", expect: expectationWithDescription("this should be executed"))
         waitForExpectationsWithTimeout(3) { (error) -> Void in
             if let error = error {
